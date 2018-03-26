@@ -5,6 +5,8 @@ var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 var twitterHanle = "maxfaneuff";
+var request = require('request');
+var fs = require("fs");
 
 
 var args = process.argv;
@@ -26,13 +28,13 @@ function getTweets() {
 }
 
 //Spotify//
-function getSpotify(song) {
+function getSpotify(song, songTitle) {
 	spotify
 	  .search({ type: 'track', query: song })
 	  .then(function(response) {
-	  	for (var i = 0; i < 10; i++){
+	  	console.log("10 Results for Songs Titled:  " + songTitle);
 	  	console.log("________________________________________________________________________________________")
-	  	console.log("10 Results for Songs Titled:  " + song);
+	  	for (var i = 0; i < 10; i++){
 	    console.log("\n");
 	    console.log("********* ARTIST NAME:  ********");
 	    console.log(response.tracks.items[i].artists[0].name);
@@ -55,16 +57,55 @@ function getSpotify(song) {
 	  });
 }
 
-function getMovie(movieName) {
-	var request = require('request');
+function getMovie(movieName, movieTitle) {
 	var queryURL = "http://www.omdbapi.com/?apikey=trilogy&t=" + movieName;
 	console.log(queryURL);
-	request(queryURL, function (error, response, body) {
+	request(queryURL, function (error, response) {
 		if(error){
 			console.log('error:', error);
 		} 
-	  	console.log(response); 
+	  	var movieObject = (JSON.parse(response.body)); 
+	  	console.log("________________________________________________________________________________________");
+	  	console.log("Your results for " + movieTitle + "\n");
+	  	console.log("********** MOVIE TITLE:  **********");
+	  	console.log(movieObject.Title + "\n");
+	  	console.log("*********** RELEASE YEAR:  **********");
+	  	console.log(movieObject.Year + "\n");
+	  	console.log("**********  IMDB RATING:  **********");
+	  	console.log(movieObject.imdbRating + "\n");
+	  	console.log("**********  ROTTEN TOMATOES RATING:  **********");
+	  	console.log(movieObject.Ratings[1].Value + "\n");
+	  	console.log("**********  COUNTRY OF PRODUCTION:  **********");
+	  	console.log(movieObject.Country + "\n");
+	  	console.log("**********  LANGUAGE:  **********");
+	  	console.log(movieObject.Language + "\n");
+	  	console.log("**********  PLOT SYNOPSIS:  **********");
+	  	console.log(movieObject.Plot + "\n");
+	  	console.log("**********  STARRING:  **********");
+	  	console.log(movieObject.Actors + "\n");
+
+
+
+
 	});
+}
+
+function readTxt() {
+	fs.readFile("random.txt", "utf8", function(error, data) {
+		var txtArr = [];
+		if (error) {
+			return console.log(error);
+		}
+
+		console.log(data);
+		var txtFull = data.split(',');
+		console.log(txtFull);
+		txtArr.push(txtFull[1]);
+		console.log(txtArr);
+		var txtSong = txtArr.join("+");
+		getSpotify(txtSong);
+
+	})
 }
 
 
@@ -78,13 +119,15 @@ if (args[2] === "my-tweets") {
 		for(var i = 3; i<args.length; i++) {
 			songArr.push(args[i]);
 			songName = songArr.join("+");
+			songTitle = songArr.join(" ");
+			console.log(songTitle);
 		} 
 		//This still needs work//
 	} else if (args[3] == undefined) {	
 		songName = "The+Sign+Ace+of+Base";
 	}	
 	console.log(songName);
-	getSpotify(songName);
+	getSpotify(songName, songTitle);
 } else if (args[2] == "movie-this") {
 	var movieArr = [];
 	var movieName
@@ -92,10 +135,15 @@ if (args[2] === "my-tweets") {
 		for (var i = 3; i<args.length; i++) {
 			movieArr.push(args[i]);
 			movieName = movieArr.join("+");
+			movieTitle = movieArr.join(" ");
 		}
 	} else if(args.length == 2) {
 		movieName = "Mr+Nobody";
+		movieTitle = "Mr Nobody";
+		getMovie(movieName, movieTitle);
+		return;
 	}
-	console.log(movieName);
-	getMovie();
+	getMovie(movieName, movieTitle);
+} else if (args[2] == "do-what-it-says") {
+	readTxt();
 }
