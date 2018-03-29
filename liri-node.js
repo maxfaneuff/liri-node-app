@@ -35,20 +35,20 @@ function getSpotify(song, songTitle) {
 	  	console.log("10 Results for Songs Titled:  " + songTitle);
 	  	console.log("________________________________________________________________________________________")
 	  	for (var i = 0; i < 10; i++){
-	    console.log("\n");
-	    console.log("********* ARTIST NAME:  ********");
-	    console.log(response.tracks.items[i].artists[0].name);
-	    console.log("********* TRACK NAME:  **********");	
-	    console.log(response.tracks.items[i].name);
-	    console.log("********** PREVIEW LINK:  ********");
-	    if (response.tracks.items[i].preview_url != null) {	
-	    console.log(response.tracks.items[i].preview_url);
-	    } else {
-	    console.log("Sorry, no preview available...");
-	    }
-	    console.log("********** ALBUM NAME:  **********");
-	    console.log(response.tracks.items[i].album.name);
-	    console.log("\n");
+		    console.log("\n");
+		    console.log("********* ARTIST NAME:  ********");
+		    console.log(response.tracks.items[i].artists[0].name);
+		    console.log("********* TRACK NAME:  **********");	
+		    console.log(response.tracks.items[i].name);
+		    console.log("********** PREVIEW LINK:  ********");
+		    if (response.tracks.items[i].preview_url != null) {	
+		    console.log(response.tracks.items[i].preview_url);
+		    } else {
+		    console.log("Sorry, no preview available...");
+		    }
+		    console.log("********** ALBUM NAME:  **********");
+		    console.log(response.tracks.items[i].album.name);
+		    console.log("\n");
 
 	  	}
 	  })
@@ -84,9 +84,6 @@ function getMovie(movieName, movieTitle) {
 	  	console.log("**********  STARRING:  **********");
 	  	console.log(movieObject.Actors + "\n");
 
-
-
-
 	});
 }
 
@@ -112,38 +109,43 @@ function readTxt() {
 //User-input control//
 if (args[2] === "my-tweets") {
 	getTweets();
-} else if (args[2] === "spotify-this-song") {
+} 
+
+if (args[2] === "spotify-this-song") {
 	var songArr = [];
 	var songName;
-	if(args[3] != "") {
+	if(typeof args[3] != "undefined") {
 		for(var i = 3; i<args.length; i++) {
 			songArr.push(args[i]);
 			songName = songArr.join("+");
 			songTitle = songArr.join(" ");
-			getSpotify(songName, songTitle);
 		} 
+		getSpotify(songName, songTitle);
 		//This still needs work//
-	} else if (args[3] == undefined) {	
+	} else {	
 		songName = "The+Sign+Ace+of+Base";
 		songTitle = "The Sign";
 		getSpotify(songName, songTitle);
 	}	
-} else if (args[2] == "movie-this") {
+} 
+
+if (args[2] == "movie-this") {
 	var movieArr = [];
-	var movieName
-	if(args[3] != "") {
+	var movieName;
+	var movieTitle;
+	if(typeof args[3] != "undefined") {
 		for (var i = 3; i<args.length; i++) {
 			movieArr.push(args[i]);
 			movieName = movieArr.join("+");
 			movieTitle = movieArr.join(" ");
 		}
-	} else if(args.length == 2) {
+	} else {
 		movieName = "Mr+Nobody";
 		movieTitle = "Mr Nobody";
-		getMovie(movieName, movieTitle);
-		return;
 	}
 	getMovie(movieName, movieTitle);
-} else if (args[2] == "do-what-it-says") {
+} 
+
+if (args[2] == "do-what-it-says") {
 	readTxt();
 }
