@@ -57,6 +57,7 @@ function getSpotify(song, songTitle) {
 	  });
 }
 
+//OMDB//
 function getMovie(movieName, movieTitle) {
 	var queryURL = "http://www.omdbapi.com/?apikey=trilogy&t=" + movieName;
 	console.log(queryURL);
@@ -87,6 +88,7 @@ function getMovie(movieName, movieTitle) {
 	});
 }
 
+//Read text file//
 function readTxt() {
 	fs.readFile("random.txt", "utf8", function(error, data) {
 		var txtArr = [];
@@ -121,7 +123,6 @@ if (args[2] === "spotify-this-song") {
 			songTitle = songArr.join(" ");
 		} 
 		getSpotify(songName, songTitle);
-		//This still needs work//
 	} else {	
 		songName = "The+Sign+Ace+of+Base";
 		songTitle = "The Sign";
