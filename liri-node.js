@@ -120,14 +120,14 @@ if (args[2] === "my-tweets") {
 			songArr.push(args[i]);
 			songName = songArr.join("+");
 			songTitle = songArr.join(" ");
-			console.log(songTitle);
+			getSpotify(songName, songTitle);
 		} 
 		//This still needs work//
 	} else if (args[3] == undefined) {	
 		songName = "The+Sign+Ace+of+Base";
+		songTitle = "The Sign";
+		getSpotify(songName, songTitle);
 	}	
-	console.log(songName);
-	getSpotify(songName, songTitle);
 } else if (args[2] == "movie-this") {
 	var movieArr = [];
 	var movieName
